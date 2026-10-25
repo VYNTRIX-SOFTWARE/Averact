@@ -6,11 +6,14 @@ import type {
 export class AveractError extends Error {
   readonly phase: ErrorPhase;
   readonly mayHaveExecuted: boolean;
-  constructor(phase: ErrorPhase, mayHaveExecuted: boolean, cause?: unknown) {
+  /** Correlates a failure with its audit trail without including the input payload. */
+  readonly operationId: string;
+  constructor(phase: ErrorPhase, mayHaveExecuted: boolean, operationId: string, cause?: unknown) {
     super(`Averact ${phase} phase failed`, { cause });
     this.name = 'AveractError';
     this.phase = phase;
     this.mayHaveExecuted = mayHaveExecuted;
+    this.operationId = operationId;
   }
 }
 
@@ -31,7 +34,7 @@ export async function runAction<Input, Output>(
         ...(reason === undefined ? {} : { reason }),
       });
     } catch (cause) {
-      throw new AveractError('audit', mayHaveExecuted, cause);
+      throw new AveractError('audit', mayHaveExecuted, operationId, cause);
     }
   }
 
@@ -48,7 +51,8 @@ export async function runAction<Input, Output>(
   try {
     valid = contract.validate(request.input);
   } catch (cause) {
-    throw new AveractError('input', false, cause);
+    await audit('input_rejected', 'Contract input validation threw');
+    throw new AveractError('input', false, operationId, cause);
   }
   if (valid !== true) {
     await audit('input_rejected', 'Contract input validation failed');
@@ -61,11 +65,11 @@ export async function runAction<Input, Output>(
     decision = await contract.policy(input, request.context);
   } catch (cause) {
     await audit('policy_failed');
-    throw new AveractError('policy', false, cause);
+    throw new AveractError('policy', false, operationId, cause);
   }
   if (!decision || !['allow', 'deny', 'approval_required'].includes(decision.kind)) {
     await audit('policy_failed');
-    throw new AveractError('policy', false, new Error('Invalid policy verdict'));
+    throw new AveractError('policy', false, operationId, new Error('Invalid policy verdict'));
   }
   if (decision.kind === 'deny') {
     await audit('policy_denied', decision.reason);
@@ -84,7 +88,7 @@ export async function runAction<Input, Output>(
       });
     } catch (cause) {
       await audit('approval_failed');
-      throw new AveractError('approval', false, cause);
+      throw new AveractError('approval', false, operationId, cause);
     }
     if (approved !== true) {
       await audit('approval_denied', decision.reason);
@@ -103,7 +107,7 @@ export async function runAction<Input, Output>(
     output = await contract.execute(input, executionContext);
   } catch (cause) {
     await audit('execution_failed');
-    throw new AveractError('execution', true, cause);
+    throw new AveractError('execution', true, operationId, cause);
   }
 
   let verified: boolean;
@@ -111,7 +115,7 @@ export async function runAction<Input, Output>(
     verified = await contract.verify(input, output, executionContext);
   } catch (cause) {
     await audit('verification_error');
-    throw new AveractError('verification', true, cause);
+    throw new AveractError('verification', true, operationId, cause);
   }
   if (verified !== true) {
     await audit('verification_failed');

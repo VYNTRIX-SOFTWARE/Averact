@@ -4,10 +4,10 @@ We welcome focused, useful contributions from developers of all experience level
 
 ## Local setup
 
-Use Node.js 20+ and npm:
+Use Node.js 22+ and npm:
 
 ```sh
-npm install
+npm ci
 npm run typecheck
 npm test
 npm run example

@@ -14,7 +14,8 @@
 
 - A write requires an idempotency key, but Averact **does not perform deduplication**. The downstream system must enforce atomic, persistent idempotency even under concurrency.
 - Every call gets a new operation ID; it is not a durable transaction reference.
-- Verification failures, exceptions, and post-execution audit failures may occur after the external action commits. `AveractError.mayHaveExecuted` warns callers not to blindly retry.
+- Verification failures, exceptions, and post-execution audit failures may occur after the external action commits. `AveractError.mayHaveExecuted` warns callers not to blindly retry. Errors also carry an `operationId` for audit correlation. This is not a stable transaction identifier across retries.
+- The runner never automatically retries actions; callers must reconcile outcomes against downstream records and use the same trusted, backend-enforced idempotency key before any retry.
 - A verifier is only as trustworthy as the evidence it checks.
 
 ## Audit

@@ -2,14 +2,21 @@
 
 These are proposals, not release commitments.
 
-## v0.1 alpha — implemented in this branch
+## v0.1 alpha — merged
 
 - [x] Typed action contracts, validation, and explicit policy outcomes
 - [x] Approval-adapter hook, execution, verification, and audit hooks
 - [x] Side-effect uncertainty errors
 - [x] Synthetic purchase-order example and unit tests
 - [ ] Public API review and package publishing strategy
-- [ ] Reproducible dependency lockfile and release automation
+- [x] Reproducible dependency lockfile and locked CI installation (PR #2)
+- [ ] Release automation and package publishing strategy
+
+## Reliability milestone — PR #2
+
+- [x] Node.js 22/24 CI matrix with `npm ci`
+- [x] Expanded failure-path regression tests and audit correlation IDs
+- [x] Documentation of retry uncertainty and downstream idempotency requirements
 
 ## v0.2 — candidate priorities
 

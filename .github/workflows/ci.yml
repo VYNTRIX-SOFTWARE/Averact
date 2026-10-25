@@ -8,16 +8,21 @@ permissions:
 jobs:
   check:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: ['22', '24']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22'
-      - name: Install dependencies
-        run: npm install --ignore-scripts --no-audit --no-fund
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --ignore-scripts --no-audit --no-fund
       - name: Typecheck
         run: npm run typecheck
       - name: Test
         run: npm test
-      - name: Run example
+      - name: Run synthetic example
         run: npm run example
