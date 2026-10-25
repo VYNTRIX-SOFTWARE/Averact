@@ -1,0 +1,19 @@
+name: Feature proposal
+description: Suggest a focused improvement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem to solve
+    validations:
+      required: true
+  - type: textarea
+    id: design
+    attributes:
+      label: Proposed interface and alternatives
+    validations:
+      required: true
+  - type: textarea
+    id: tests
+    attributes:
+      label: Suggested acceptance tests
