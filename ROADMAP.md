@@ -18,6 +18,13 @@ These are proposals, not release commitments.
 - [x] Expanded failure-path regression tests and audit correlation IDs
 - [x] Documentation of retry uncertainty and downstream idempotency requirements
 
+## Action receipts — PR #3
+
+- [x] Opt-in action receipt with input fingerprint and deterministic checksum
+- [x] Correlation of policy, approval, execution and verification results
+- [x] Unit tests covering invalid evidence, tampering and uncertain execution
+- [ ] Cryptographically authenticated receipts and durable storage (future RFC; NOT in PR #3)
+
 ## v0.2 — candidate priorities
 
 - [ ] Durable approval binding reference integration
