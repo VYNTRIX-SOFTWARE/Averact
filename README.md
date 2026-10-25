@@ -26,17 +26,18 @@ Averact is a minimal, framework-independent TypeScript experiment for attaching 
 - Allow, deny, and approval-required policy outcomes
 - Trusted approval-adapter hook (no built-in approvals storage)
 - Audit sink hook with pre-execution fail-closed behavior
-- Post-execution verification and explicit uncertain-outcome errors
+- Post-execution verification and explicit uncertain-outcome errors correlated by operation ID
+- Failure-path regression tests across validation, policy, approval, audit, execution, and verification
 - Mandatory idempotency *keys* for write actions (enforcement belongs to the downstream system)
 
 ## Try the prototype
 
-Requires Node.js 20+ and npm; no database or AI API key is necessary.
+Requires Node.js 22+ and npm; no database or AI API key is necessary.
 
 ```sh
 git clone https://github.com/VYNTRIX-SOFTWARE/Averact.git
 cd Averact
-npm install
+npm ci
 npm test
 npm run example
 ```
@@ -73,6 +74,12 @@ const result = await runAction(contract, {
 ```
 
 This is an **API sketch**: the named callbacks and adapters are supplied by the host application; no package has been published yet. Import from local build output in the runnable example.
+
+## Failure handling and retries
+
+An `AveractError` exposes `phase`, `operationId`, and `mayHaveExecuted`. When `mayHaveExecuted === true`, the downstream write **might already have committed**; do not blindly retry. Read the downstream state or reconcile using the original idempotency key.
+
+**Important:** Averact requires an idempotency key on writes but does **not** deduplicate requests, lock transactions, or provide exactly-once execution. Those guarantees must be implemented by the downstream service. A failed verifier does not roll back a write.
 
 ## Project documentation
 
