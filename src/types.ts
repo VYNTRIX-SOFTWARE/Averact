@@ -67,4 +67,4 @@ export type ActionResult<Output> =
   | { readonly status: 'approval_required'; readonly operationId: string; readonly reason: string }
   | { readonly status: 'completed'; readonly operationId: string; readonly output: Output }
   | { readonly status: 'verification_failed'; readonly operationId: string; readonly output: Output };
-export type ErrorPhase = 'input' | 'policy' | 'approval' | 'audit' | 'execution' | 'verification';
+export type ErrorPhase = 'input' | 'policy' | 'approval' | 'audit' | 'execution' | 'verification' | 'receipt';
