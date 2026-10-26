@@ -81,6 +81,10 @@ An `AveractError` exposes `phase`, `operationId`, and `mayHaveExecuted`. When `m
 
 **Important:** Averact requires an idempotency key on writes but does **not** deduplicate requests, lock transactions, or provide exactly-once execution. Those guarantees must be implemented by the downstream service. A failed verifier does not roll back a write.
 
+## Action receipts (experimental, opt-in)
+
+`runActionWithReceipt()` emits a structured action receipt with a deterministic checksum, an input SHA-256 fingerprint, policy outcome, optional approval reference, and verification status. This is **not** a signed or tamper-proof audit record. See [action receipts](docs/action-receipts.md) for limitations and examples.
+
 ## Project documentation
 
 [Architecture](docs/architecture.md) · [Security model](docs/security-model.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Security reports](SECURITY.md)

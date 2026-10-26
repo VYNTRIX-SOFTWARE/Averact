@@ -25,6 +25,10 @@
 - Raw action input and output are not included automatically. `reason` is policy-authored and must not contain credentials, customer information, or sensitive data. Actor identifiers still need proper retention controls.
 - Production deployments require durable, access-controlled, tamper-evident audit sinks.
 
+## Experimental action receipts
+
+Receipts are not signatures or independent evidence of correct execution. Their unkeyed checksums can be re-computed by an attacker; input hashes do not guarantee privacy. The host must provide protected durable storage, authenticated approval evidence and downstream reconciliation. See [action receipts](action-receipts.md).
+
 ## Not included
 
 No identity provider, approval database, durable orchestrator, transactional outbox, distributed locks, exactly-once guarantee, MCP bridge, sandbox, policy language, or regulatory certification.
