@@ -17,8 +17,10 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "npm run build && node --test test/*.test.mjs",
-    "example": "npm run build && node examples/purchase-order.mjs"
+    "test": "npm run build && node --test test/runtime.test.mjs test/receipts.test.mjs",
+    "example": "npm run build && node examples/purchase-order.mjs",
+    "test:integration": "npm run build && node --test test/postgres.integration.test.mjs",
+    "example:postgres": "npm run build && node examples/transaction-safety/demo.mjs"
   },
   "devDependencies": {
     "typescript": "~5.8.3"
