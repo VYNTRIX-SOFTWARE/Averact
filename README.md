@@ -85,6 +85,10 @@ An `AveractError` exposes `phase`, `operationId`, and `mayHaveExecuted`. When `m
 
 `runActionWithReceipt()` emits a structured action receipt with a deterministic checksum, an input SHA-256 fingerprint, policy outcome, optional approval reference, and verification status. This is **not** a signed or tamper-proof audit record. See [action receipts](docs/action-receipts.md) for limitations and examples.
 
+## PostgreSQL transaction safety demo (experimental)
+
+A standalone [PostgreSQL integration example](examples/transaction-safety/README.md) demonstrates backend-enforced atomic idempotency under concurrent requests, payload conflicts, and simulated lost client responses. This does **not** add exactly-once guarantees to Averact itself.
+
 ## Project documentation
 
 [Architecture](docs/architecture.md) · [Security model](docs/security-model.md) · [Roadmap](ROADMAP.md) · [Contributing](CONTRIBUTING.md) · [Security reports](SECURITY.md)

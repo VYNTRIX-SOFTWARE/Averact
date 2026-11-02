@@ -25,6 +25,13 @@ These are proposals, not release commitments.
 - [x] Unit tests covering invalid evidence, tampering and uncertain execution
 - [ ] Cryptographically authenticated receipts and durable storage (future RFC; NOT in PR #3)
 
+## PR #4 — Transaction Safety Demo
+
+- [x] Standalone PostgreSQL 16 schema with atomic idempotency key arbitration
+- [x] Integration cases covering replays, conflicts, concurrent requests, and response-loss reconciliation
+- [x] Separate PostgreSQL CI job; core library remains database-independent
+- [ ] Verify the actual PostgreSQL integration job is green before merging
+
 ## v0.2 — candidate priorities
 
 - [ ] Durable approval binding reference integration
